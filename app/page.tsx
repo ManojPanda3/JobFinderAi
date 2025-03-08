@@ -3,10 +3,10 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Search, BookOpen, ArrowRight } from "lucide-react"
 import JobList from "@/components/job-list"
-import { fetcheJobs, jobs } from "@/lib/data"
+import { fetcheJobs } from "@/lib/data"
 
 export default async function Home() {
-  await fetcheJobs();
+  const jobs = fetcheJobs();
   return (
     <div className="space-y-12">
       {/* Hero Section */}
