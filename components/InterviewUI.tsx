@@ -5,13 +5,14 @@ import React, { useState, useRef, useEffect } from 'react';
 import AudioVisualizer from './AudioVisualizer';
 import SpeechProcessor from './SpeechProcessor';
 import SpeechSynthesizer from './SpeechSynthesizer';
+import { searchJobs } from '@/lib/data';
+import { LoaderIcon } from 'lucide-react';
 
 interface InterviewUIProps {
   jobId: string;
-  jobTitle: string;
 }
 
-const InterviewUI: React.FC<InterviewUIProps> = ({ jobId, jobTitle }) => {
+const InterviewUI: React.FC<InterviewUIProps> = ({ jobId }) => {
   const [userMessage, setUserMessage] = useState('');
   const [aiMessage, setAiMessage] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
@@ -21,12 +22,25 @@ const InterviewUI: React.FC<InterviewUIProps> = ({ jobId, jobTitle }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
   const audioElementRef = useRef<HTMLAudioElement | null>(null);
+  const [job, setJob] = useState(null);
+  const [loading, setLoading] = useState(true)
 
-  // Initialize the conversation
   useEffect(() => {
-    // Add an initial welcome message
-    handleSendMessage(`Hello, I'm your AI interviewer for the ${jobTitle} position. Let's begin our conversation. Please introduce yourself.`, 'ai');
-  }, [jobTitle]);
+    if (!jobId) return;
+    searchJobs("", jobId)
+      .then((job) => {
+        if (job.length) {
+          setJob(job[0])
+          setLoading(false)
+        }
+      })
+  }, [jobId])
+  useEffect(() => {
+    if (!job) return
+    handleSendMessage(`Hello, I'm your AI interviewer for the ${job.title} position. Let's begin our conversation. Please introduce yourself.`, 'ai');
+  }, [job]);
+
+
 
   // Get microphone permissions when recording starts
   useEffect(() => {
@@ -110,15 +124,16 @@ const InterviewUI: React.FC<InterviewUIProps> = ({ jobId, jobTitle }) => {
     setIsPlaying(false);
     setShouldPlay(false);
   };
+  if (loading || job === null) return <LoaderIcon className="animate-spin -translate-1/2 absolute top-1/2 left-1/2 -translate-1/2" />
 
   return (
     <div className="flex flex-col items-center">
       {/* Audio visualization sphere */}
       <div className={`relative w-64 h-64 mb-8 flex items-center justify-center rounded-full ${isRecording
-          ? 'bg-accent'
-          : isPlaying
-            ? 'bg-primary/10'
-            : 'bg-card'
+        ? 'bg-accent'
+        : isPlaying
+          ? 'bg-primary/10'
+          : 'bg-card'
         } border border-border shadow-lg`}>
         <AudioVisualizer
           isRecording={isRecording}
@@ -128,10 +143,10 @@ const InterviewUI: React.FC<InterviewUIProps> = ({ jobId, jobTitle }) => {
         />
         <div className="absolute inset-0 flex items-center justify-center">
           <div className={`w-16 h-16 rounded-full ${isRecording
-              ? 'bg-destructive animate-pulse'
-              : isPlaying
-                ? 'bg-primary animate-pulse'
-                : 'bg-muted'
+            ? 'bg-destructive animate-pulse'
+            : isPlaying
+              ? 'bg-primary animate-pulse'
+              : 'bg-muted'
             }`}></div>
         </div>
       </div>
@@ -167,8 +182,8 @@ const InterviewUI: React.FC<InterviewUIProps> = ({ jobId, jobTitle }) => {
           <div
             key={index}
             className={`mb-4 p-3 rounded-lg ${item.role === 'user'
-                ? 'bg-accent/20 text-accent-foreground ml-8'
-                : 'bg-muted text-muted-foreground mr-8'
+              ? 'bg-accent/20 text-accent-foreground ml-8'
+              : 'bg-muted text-muted-foreground mr-8'
               }`}
           >
             <p className="font-semibold mb-1">

@@ -5,9 +5,9 @@ import InterviewUI from "@/components/InterviewUI";
 
 export default function Interview({ params }: { params: { id: string } }) {
   // Get job data
-  const job = getJobById(params.id);
+  const job = params.id;
 
-  if (!job?.id) {
+  if (!job) {
     notFound();
   }
 
@@ -17,7 +17,7 @@ export default function Interview({ params }: { params: { id: string } }) {
         <h1 className="text-3xl font-bold mb-2 text-foreground">Interview Session</h1>
         <p className="text-xl text-muted-foreground mb-6">Position: {job.title}</p>
         <div className="bg-card p-6 rounded-lg border border-border shadow-sm">
-          <InterviewUI jobId={job.id} jobTitle={job.title} />
+          <InterviewUI jobId={job} />
         </div>
       </div>
     </div>

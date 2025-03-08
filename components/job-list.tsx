@@ -36,7 +36,9 @@ export default function JobList({ jobs }: JobListProps) {
                 </div>
               </div>
 
-              <p className="text-sm">{job.description}</p>
+              {/* Render HTML Description using dangerouslySetInnerHTML */}
+              <div className="text-sm" dangerouslySetInnerHTML={{ __html: job.description }} />
+
 
               <div>
                 <p className="text-sm font-medium mb-2">Key Skills:</p>
@@ -66,4 +68,3 @@ export default function JobList({ jobs }: JobListProps) {
     </div>
   )
 }
-

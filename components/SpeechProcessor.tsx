@@ -34,10 +34,10 @@ const SpeechProcessor: React.FC<SpeechProcessorProps> = ({ onTranscript, isProce
         };
 
         recognitionRef.current.onerror = (event: any) => {
-          console.error('Speech recognition error', event.error);
+          console.error('Speech recognition error', event.error, event.message);
           const errorMessage = event.error === 'network'
             ? 'Network error: Please check your internet connection and try again.'
-            : `Speech recognition error: ${event.error}`;
+            : `Speech recognition error: ${event.message}`;
           setError(errorMessage);
           setIsListening(false);
         };

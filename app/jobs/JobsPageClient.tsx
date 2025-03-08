@@ -4,13 +4,21 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Search } from "lucide-react"
 import JobList from "@/components/job-list"
+import { Job, searchJobs } from "@/lib/data"
+import { useEffect, useState } from "react"
 
 interface JobsPageClientProps {
   query: string
-  jobs: any[] // Replace with your job type
 }
 
-export default function JobsPageClient({ query, jobs }: JobsPageClientProps) {
+export default function JobsPageClient({ query }: JobsPageClientProps) {
+  const [jobs, setJobs] = useState<Job[]>([])
+  useEffect(() => {
+    searchJobs(query)
+      .then((fetchedJobs) => {
+        setJobs(fetchedJobs);
+      })
+  }, [query]);
   return (
     <div className="space-y-8">
       <div>
