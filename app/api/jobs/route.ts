@@ -14,8 +14,9 @@ export async function POST(request: NextRequest) {
         params.append('and', keyword);
       }
     }
-    if (limit !== undefined && limit !== null) params.append('limit', limit.toString());
-    if (id&&id.strip()!="") {
+params.append('limit', limit?.toString()||'10');
+
+    if (id && id.strip()!="") {
       params.append('_id', id);
     }
 
