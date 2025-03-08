@@ -14,7 +14,7 @@ interface AIPageProps {
 }
 
 export default function AIPage({ searchParams }: AIPageProps) {
-  const skill = searchParams.skill || ""
+  const skill = searchParams?.skill || ""
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
