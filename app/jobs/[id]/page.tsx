@@ -3,7 +3,7 @@ import { notFound } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
-import { Briefcase, MapPin, Clock, DollarSign, ArrowLeft } from "lucide-react"
+import { Briefcase, MapPin, Clock, DollarSign, ArrowLeft, PhoneCall } from "lucide-react"
 import { getJobById } from "@/lib/data"
 
 export default function JobPage({ params }: { params: { id: string } }) {
@@ -15,15 +15,27 @@ export default function JobPage({ params }: { params: { id: string } }) {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <Button variant="ghost" size="sm" asChild className="mb-6">
-        <Link href="/jobs">
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Jobs
-        </Link>
-      </Button>
+      <div className="flex items-center justify-between mb-6">
+        <Button variant="ghost" size="sm" asChild>
+          <Link href="/jobs">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Jobs
+          </Link>
+        </Button>
+        <Button
+          variant="secondary"
+          asChild
+        >
+          <Link href={`/interview/${job.id}`}>
+            <PhoneCall className="mr-2 h-4 w-4" />
+            Prepare for Interview
+          </Link>
+        </Button>
+      </div>
 
       <Card className="mb-8">
         <CardContent className="p-6 space-y-6">
+          {/* ... rest of the CardContent ... */}
           <div>
             <h1 className="text-3xl font-bold">{job.title}</h1>
             <p className="text-xl text-muted-foreground">{job.company}</p>
@@ -78,6 +90,7 @@ export default function JobPage({ params }: { params: { id: string } }) {
               </Button>
             </div>
           </div>
+
         </CardContent>
       </Card>
 
@@ -89,9 +102,17 @@ export default function JobPage({ params }: { params: { id: string } }) {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button>Apply Now</Button>
           <Button variant="outline">Save Job</Button>
+          <Button
+            variant="secondary"  // Use a distinct variant for the interview button
+            asChild
+          >
+            <Link href={`/interview/${job.id}`}>
+              <PhoneCall className="mr-2 h-4 w-4" /> {/* Add the icon */}
+              Prepare for Interview
+            </Link>
+          </Button>
         </div>
       </div>
     </div>
   )
 }
-
