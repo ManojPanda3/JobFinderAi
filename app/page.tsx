@@ -61,7 +61,7 @@ export default async function Home() {
             </Link>
           </Button>
         </div>
-        <JobList jobs={jobs.slice(0, 4)} />
+        <JobList jobs={jobs?.slice(0, 4)} />
       </section>
 
       {/* Skills Section */}
