@@ -22,21 +22,21 @@ const InterviewUI: React.FC<InterviewUIProps> = ({ jobId }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
   const audioElementRef = useRef<HTMLAudioElement | null>(null);
-  const [job, setJob] = useState(null);
-  const [loading, setLoading] = useState(true)
+  const [job, setJob] = useState({ id: "", title: "unknown" });
+  const [loading, setLoading] = useState(false)
 
+  // useEffect(() => {
+  //   if (!jobId) return;
+  //   searchJobs("", jobId)
+  //     .then((job) => {
+  //       if (job.length) {
+  //         setJob(job[0])
+  //         setLoading(false)
+  //       }
+  //     })
+  // }, [jobId])
   useEffect(() => {
-    if (!jobId) return;
-    searchJobs("", jobId)
-      .then((job) => {
-        if (job.length) {
-          setJob(job[0])
-          setLoading(false)
-        }
-      })
-  }, [jobId])
-  useEffect(() => {
-    if (!job) return
+    // if (!job) return
     handleSendMessage(`Hello, I'm your AI interviewer for the ${job.title} position. Let's begin our conversation. Please introduce yourself.`, 'ai');
   }, [job]);
 

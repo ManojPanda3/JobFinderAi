@@ -15,7 +15,8 @@ export default function JobsPageClient({ query }: JobsPageClientProps) {
   const [jobs, setJobs] = useState<Job[]>([])
   useEffect(() => {
     const allJobs = fetcheJobs();
-    const filterdJobs = allJobs.filter(n => n.title.toLocaleLowerCase() === query.toLocaleLowerCase() || n.description.toLocaleLowerCase().includes(query.toLocaleLowerCase()))
+    const newquery = query.toLowerCase()
+    const filterdJobs = allJobs.filter(n => n.title.toLocaleLowerCase() === newquery || n.requirements.some(n => n.toLowerCase() === newquery) || n.description.toLocaleLowerCase().includes(query.toLocaleLowerCase()))
     setJobs(filterdJobs)
     // searchJobs(query)
     //   .then((fetchedJobs) => {
