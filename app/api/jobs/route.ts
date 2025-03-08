@@ -8,15 +8,15 @@ export async function POST(request: NextRequest) {
     const { query, limit, id } = requestData;
     const params = new URLSearchParams();
 
-    if (query != undefined && query?.strip() != "") {
+    if (query != undefined && query?.trim() != "") {
       const keywords = query.trim().split(/\s+/);
       for (const keyword of keywords) {
         params.append('and', keyword);
       }
     }
-params.append('limit', limit?.toString()||'10');
+    params.append('limit', limit?.toString() || '10');
 
-    if (id && id.strip()!="") {
+    if (id && id.trim() != "") {
       params.append('_id', id);
     }
 
